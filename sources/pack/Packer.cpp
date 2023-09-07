@@ -8,6 +8,8 @@
 #include <iostream>
 
 #include "Packer.hpp"
+#include "Chunk.hpp"
+#include "csc32.hpp"
 
 void sw::Packer::startPackaging(std::string path)
 {
@@ -32,7 +34,38 @@ void sw::Packer::readDirectory(std::string path)
     }
 }
 
+void createChunkData(std::string path, sw::chunkHeader& header, sw::chunkData& data)
+{
+    std::fstream file(path, std::ios::binary | std::ios::ate);
+    if (!file.is_open())
+        throw std::exception();
+    std::streamsize size = file.tellg();
+    std::vector<char> buffer(size);
+
+    file.seekg(0, std::ios::beg);
+    file.read(buffer.data(), size);
+
+    data.path = path.data();
+    data.propsCount = 0;
+    data.props = nullptr;
+    data.data = std::malloc(size);
+    std::memcpy(data.data, buffer.data(), size);
+
+    header.sizeBase = size;
+    header.sizePack = size;
+}
+
 void sw::Packer::readFile(std::string path)
 {
-    std::cout << path << std::endl;
+    sw::chunkHeader header{};
+    sw::chunkData data{};
+    std::filesystem::path path1(path);
+
+    header.type[0] = 'R';
+    header.type[1] = 'A';
+    header.type[2] = 'W';
+    header.type[3] = 'D';
+    createChunkData(path, header, data);
+    header.id = sw::computeCsc32(path1.filename().string().data(), path1.filename().string().size());
+    header.crc32 = sw::computeCsc32((char *)&data, sizeof(data));
 }
