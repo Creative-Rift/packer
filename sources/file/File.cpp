@@ -3,12 +3,14 @@
 ** file.cpp
 */
 
-#include <fstream>
 #include <iostream>
 
 #include "File.hpp"
 
-sw::File::File()
+std::fstream sw::File::m_file{};
+
+sw::File::File() :
+m_header()
 {
     createHeader();
 }
@@ -19,18 +21,18 @@ void sw::File::createHeader()
     m_header.id[1] = 'w';
     m_header.id[2] = 'f';
     m_header.id[3] = 'p';
-    m_header.version = 10;
+    m_header.version = 100;
     m_header.resourcesCount = 0;
     m_header.fileType = DEVPACK;
-
-    std::cout << "version: " << m_header.version << std::endl;
 }
 
 void sw::File::generateFile(std::string path)
 {
-    std::fstream newFile;
+    m_file.open(path + "/packages.swfp", std::ios::out | std::ios::binary);
+    m_file.write(reinterpret_cast<const char *>(&m_header), sizeof(filePackHeader));
+}
 
-    newFile.open(path + "packages.swfp", std::ios::out | std::ios::binary);
-    newFile.write(reinterpret_cast<const char *>(&m_header), sizeof(filePackHeader));
-    newFile.close();
+void sw::File::saveFile()
+{
+    sw::File::m_file.close();
 }

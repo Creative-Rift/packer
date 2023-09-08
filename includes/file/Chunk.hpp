@@ -24,13 +24,14 @@ namespace sw
     };
 
     struct chunkData {
-        char *path;
         unsigned int propsCount;
+        unsigned int pathCount;
         unsigned int *props;
+        char *path;
         void *data;
     };
 
-    struct chunkResourceChunk {
+    struct resourceChunk {
         chunkHeader header;
         chunkData data;
     };

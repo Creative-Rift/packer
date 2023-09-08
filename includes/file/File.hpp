@@ -7,6 +7,10 @@
 #define SW_PACKER_FILE_HPP
 
 #include <string>
+#include <fstream>
+#include <vector>
+
+#include "Chunk.hpp"
 
 namespace sw {
 
@@ -25,9 +29,11 @@ namespace sw {
 
     class File {
         public:
+            static std::fstream m_file;
             File();
 
             void generateFile(std::string path = "./");
+            void saveFile();
         private:
             filePackHeader m_header;
 
