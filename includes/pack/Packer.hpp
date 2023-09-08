@@ -8,14 +8,20 @@
 
 #include <string>
 
+#include "Chunk.hpp"
+
 namespace sw {
 
     class Packer {
         public:
-            static void startPackaging(std::string path);
+            static std::string path;
+            static void startPackaging(std::string&& path);
         private:
             static void readDirectory(std::string path);
             static void readFile(std::string path);
+            static void fillType(std::string&& type, chunkHeader& header);
+            static void fillProps(sw::chunkData& data);
+            static void createChunkData(std::string path, sw::chunkHeader& header, sw::chunkData& data);
     };
 
 } // sw

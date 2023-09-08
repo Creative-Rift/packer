@@ -32,6 +32,7 @@ namespace sw {
             static void generateFile(std::string&& fileName = "packages", std::string&& path = "./", bool discard = false);
             static void saveFile();
             static void writeInFile(const sw::resourceChunk& chunk);
+            static void countFiles(std::string path);
         private:
             static filePackHeader m_header;
             static std::fstream m_file;

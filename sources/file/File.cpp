@@ -19,8 +19,6 @@ void sw::File::createHeader()
     m_header.id[3] = 'p';
     m_header.version = 100;
     m_header.fileType = DEVPACK;
-    //TODO Compute resources count
-    m_header.resourcesCount = 0;
 }
 
 void sw::File::generateFile(std::string&& fileName, std::string&& path, bool discard)
@@ -56,4 +54,14 @@ std::string sw::File::computeFileName(std::string &fileName, std::string &path)
     while(std::filesystem::exists(path + newFileName + ".swfp"))
         newFileName = fileName + std::to_string(index++);
     return newFileName;
+}
+
+void sw::File::countFiles(std::string path)
+{
+    for (const auto & entry : std::filesystem::directory_iterator(path)) {
+        if (entry.is_directory())
+            countFiles(entry.path().string());
+        else
+            m_header.resourcesCount += 1;
+    }
 }

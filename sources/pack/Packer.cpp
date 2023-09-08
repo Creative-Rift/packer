@@ -8,18 +8,19 @@
 #include <iostream>
 
 #include "Packer.hpp"
-#include "Chunk.hpp"
 #include "csc32.hpp"
 #include "File.hpp"
 
-void sw::Packer::startPackaging(std::string path)
+std::string sw::Packer::path{};
+
+void sw::Packer::startPackaging(std::string&& path)
 {
     if (!std::filesystem::exists(path)) {
         std::cout << "Path: [" << path << "] doesn't exist!";
         return;
     }
     if (!std::filesystem::is_directory(path)) {
-        std::cout << "[" << path << "] id not a path!";
+        std::cout << "[" << path << "] id not a directory!";
         return;
     }
     readDirectory(path);
@@ -35,7 +36,7 @@ void sw::Packer::readDirectory(std::string path)
     }
 }
 
-void createChunkData(std::string path, sw::chunkHeader& header, sw::chunkData& data)
+void sw::Packer::createChunkData(std::string path, sw::chunkHeader& header, sw::chunkData& data)
 {
     std::ifstream file(path, std::ios::binary | std::ios::ate);
     if (!file.is_open())
@@ -49,8 +50,7 @@ void createChunkData(std::string path, sw::chunkHeader& header, sw::chunkData& d
     data.path = (char *)std::malloc(path.size());
     std::memset(data.path, '\0', path.size());
     std::memcpy(data.path, path.data(), path.size());
-    data.pathCount = path.size();
-    data.propsCount = 0;
+    fillProps(data);
     data.props = nullptr;
     data.data = std::malloc(size);
     std::memcpy(data.data, buffer.data(), size);
@@ -64,15 +64,21 @@ void sw::Packer::readFile(std::string path)
     sw::resourceChunk chunk{};
     std::filesystem::path path1(path);
 
-    chunk.header.type[0] = 'R';
-    chunk.header.type[1] = 'A';
-    chunk.header.type[2] = 'W';
-    chunk.header.type[3] = 'D';
+    fillType("RAWD", chunk.header);
     chunk.header.id = sw::computeCsc32((unsigned char *)path1.filename().string().data(), path1.filename().string().size());
     createChunkData(path, chunk.header, chunk.data);
     chunk.header.crc32 = sw::computeCsc32((unsigned char *)&chunk.data, sizeof(chunk.data));
-    sw::File::m_file.write(reinterpret_cast<const char *>(&chunk.header), sizeof(sw::chunkHeader));
-    sw::File::m_file.write(reinterpret_cast<const char *>(&chunk.data), sizeof(unsigned int) * 2);
-    sw::File::m_file.write(reinterpret_cast<const char *>(chunk.data.path), chunk.data.pathCount);
-    sw::File::m_file.write(reinterpret_cast<const char *>(chunk.data.data), chunk.header.sizePack);
+    sw::File::writeInFile(chunk);
+}
+
+void sw::Packer::fillType(std::string &&type, sw::chunkHeader& header)
+{
+    for (int i = 0; i < 4; i++)
+        header.type[i] = type[i];
+}
+
+void sw::Packer::fillProps(sw::chunkData& data)
+{
+    data.pathCount = path.size();
+    data.propsCount = 0;
 }
