@@ -3,6 +3,8 @@
 ** main.cpp
 */
 
+#include <iostream>
+
 #include "File.hpp"
 #ifdef SWFP_PACKER
 #include "Packer.hpp"
@@ -11,17 +13,21 @@
 #endif
 
 
-int main()
+int main(int argc, char** argv)
 {
+    if (argc != 2) {
+        std::cerr << "ERROR: Missing arguments" << std::endl;
+        return 1;
+    }
 #ifdef SWFP_PACKER
-    sw::Packer::path = R"(G:\Cretative-Rift\SWEngine-graphical\libraries\)";
+    sw::Packer::path = argv[1];
 
     sw::File::countFiles(sw::Packer::path);
-    sw::File::generateFile("packages", R"(G:\Cretative-Rift\packer\out\0.1\)", true);
-    sw::Packer::startPackaging(R"(G:\Cretative-Rift\SWEngine-graphical\libraries\)");
+    sw::File::generateFile("packages");
+    sw::Packer::startPackaging(argv[1]);
     sw::File::saveFile();
 #elif SWFP_UNPACKER
-    sw::UnPackFile file{R"(G:\Cretative-Rift\packer\out\0.1\packages.swfp)"};
+    sw::UnPackFile file{argv[1]};
 #endif
     return 0;
 }

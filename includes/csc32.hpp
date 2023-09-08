@@ -1,5 +1,5 @@
 /*
-** ShipWreck Engine , 2023
+** SWPacker , 2023
 ** csc.hpp
 */
 
@@ -10,6 +10,11 @@
 
 namespace sw
 {
+    /// \brief Generate a CSC32 from the given buffer
+    ///
+    /// \param buffer  - unsigned char *
+    /// \param size    - unsigned int
+    /// \return unsigned int
     unsigned int computeCsc32(unsigned char *buffer, unsigned int size);
 
     static unsigned int crcTable[256] = {

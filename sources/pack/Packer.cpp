@@ -50,8 +50,8 @@ void sw::Packer::createChunkData(std::string path, sw::chunkHeader& header, sw::
     data.path = (char *)std::malloc(path.size());
     std::memset(data.path, '\0', path.size());
     std::memcpy(data.path, path.data(), path.size());
+    data.pathCount = path.size();
     fillProps(data);
-    data.props = nullptr;
     data.data = std::malloc(size);
     std::memcpy(data.data, buffer.data(), size);
 
@@ -79,6 +79,6 @@ void sw::Packer::fillType(std::string &&type, sw::chunkHeader& header)
 
 void sw::Packer::fillProps(sw::chunkData& data)
 {
-    data.pathCount = path.size();
     data.propsCount = 0;
+    data.props = nullptr;
 }
