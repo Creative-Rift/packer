@@ -29,15 +29,15 @@ namespace sw {
 
     class File {
         public:
-            static std::fstream m_file;
-            File();
-
-            void generateFile(std::string path = "./");
-            void saveFile();
+            static void generateFile(std::string&& fileName = "packages", std::string&& path = "./", bool discard = false);
+            static void saveFile();
+            static void writeInFile(const sw::resourceChunk& chunk);
         private:
-            filePackHeader m_header;
+            static filePackHeader m_header;
+            static std::fstream m_file;
 
-            void createHeader();
+            static void createHeader();
+            static std::string computeFileName(std::string& fileName, std::string& path);
     };
 
 } // sw

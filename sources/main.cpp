@@ -14,11 +14,9 @@
 int main()
 {
 #ifdef SWFP_PACKER
-    sw::File file{};
-
-    file.generateFile(R"(G:\Cretative-Rift\packer\out\0.1\)");
+    sw::File::generateFile("packages", R"(G:\Cretative-Rift\packer\out\0.1\)");
     sw::Packer::startPackaging(R"(G:\Cretative-Rift\packer\out\0.1\textures)");
-    file.saveFile();
+    sw::File::saveFile();
 #elif SWFP_UNPACKER
     sw::UnPackFile file{R"(G:\Cretative-Rift\packer\out\0.1\packages.swfp)"};
 #endif
