@@ -13,10 +13,10 @@ sw::filePackHeader sw::File::m_header{};
 
 void sw::File::createHeader()
 {
-    m_header.id[0] = 's';
-    m_header.id[1] = 'w';
-    m_header.id[2] = 'f';
-    m_header.id[3] = 'p';
+    m_header.id[0] = 'S';
+    m_header.id[1] = 'W';
+    m_header.id[2] = 'F';
+    m_header.id[3] = 'P';
     m_header.version = 100;
     m_header.fileType = DEVPACK;
 }

@@ -15,7 +15,7 @@
 
 int main(int argc, char** argv)
 {
-    if (argc != 2) {
+    if (argc < 2) {
         std::cerr << "ERROR: Missing arguments" << std::endl;
         return 1;
     }
@@ -27,7 +27,7 @@ int main(int argc, char** argv)
     sw::Packer::startPackaging(argv[1]);
     sw::File::saveFile();
 #elif SWFP_UNPACKER
-    sw::UnPackFile file{argv[1]};
+    sw::UnPackFile file{argv[1], (argc >= 3 ? argv[2] : "./")};
 #endif
     return 0;
 }

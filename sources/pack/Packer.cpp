@@ -47,10 +47,10 @@ void sw::Packer::createChunkData(std::string path, sw::chunkHeader& header, sw::
     file.seekg(0, std::ios::beg);
     file.read(buffer.data(), size);
 
-    data.path = (char *)std::malloc(path.size());
-    std::memset(data.path, '\0', path.size());
-    std::memcpy(data.path, path.data(), path.size());
-    data.pathCount = path.size();
+    data.path = (char *)std::malloc(path.size() - sw::Packer::path.size() + 1);
+    std::memset(data.path, '\0', path.size() - sw::Packer::path.size() + 1);
+    std::memcpy(data.path, path.data() + sw::Packer::path.size(), path.size() - sw::Packer::path.size());
+    data.pathCount = path.size() - sw::Packer::path.size();
     fillProps(data);
     data.data = std::malloc(size);
     std::memcpy(data.data, buffer.data(), size);
