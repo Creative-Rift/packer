@@ -63,6 +63,6 @@ void sw::UnPackFile::createFile(sw::chunkHeader &chunkHeader, std::string path, 
         outFile.write((char *)buffer, chunkHeader.sizeBase);
         free(buffer);
     } catch (const sw::FileException& e) {
-        sw::Log::AddLog("Cannot create file: " + path);
+        sw::Log::AddLog("Cannot create file: " + path, sw::Log::WARNING);
     }
 }

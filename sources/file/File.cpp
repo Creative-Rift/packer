@@ -7,6 +7,8 @@
 #include <filesystem>
 
 #include "File.hpp"
+#include "FileException.hpp"
+#include "Log.hpp"
 
 std::fstream sw::File::m_file{};
 sw::filePackHeader sw::File::m_header{};
@@ -30,6 +32,8 @@ void sw::File::generateFile(std::string&& fileName, std::string&& path, bool dis
         fileName = computeFileName(fileName, path);
         m_file.open(path + fileName + ".swfp", std::ios::out | std::ios::binary);
     }
+    if (!m_file.is_open())
+        throw sw::FileException("Cannot create packed file: " + path + fileName + ".swfp");
     m_file.write(reinterpret_cast<const char *>(&m_header), sizeof(filePackHeader));
 }
 

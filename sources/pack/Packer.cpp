@@ -10,6 +10,9 @@
 #include "Packer.hpp"
 #include "csc32.hpp"
 #include "File.hpp"
+#include "FileException.hpp"
+#include "utils.hpp"
+#include "Log.hpp"
 
 std::string sw::Packer::path{};
 
@@ -40,19 +43,19 @@ void sw::Packer::createChunkData(std::string path, sw::chunkHeader& header, sw::
 {
     std::ifstream file(path, std::ios::binary | std::ios::ate);
     if (!file.is_open())
-        throw std::exception();
+        throw sw::FileException("Cannot open target file: " + path);
     std::streamsize size = file.tellg();
     std::vector<char> buffer(size);
 
     file.seekg(0, std::ios::beg);
     file.read(buffer.data(), size);
 
-    data.path = (char *)std::malloc(path.size() - sw::Packer::path.size() + 1);
+    data.path = (char *)sw::MemAlloc(path.size() - sw::Packer::path.size() + 1);
     std::memset(data.path, '\0', path.size() - sw::Packer::path.size() + 1);
     std::memcpy(data.path, path.data() + sw::Packer::path.size(), path.size() - sw::Packer::path.size());
     data.pathCount = path.size() - sw::Packer::path.size();
     fillProps(data);
-    data.data = std::malloc(size);
+    data.data = sw::MemAlloc(size);
     std::memcpy(data.data, buffer.data(), size);
 
     header.sizeBase = size;
@@ -64,11 +67,15 @@ void sw::Packer::readFile(std::string path)
     sw::resourceChunk chunk{};
     std::filesystem::path path1(path);
 
-    fillType("RAWD", chunk.header);
-    chunk.header.id = sw::computeCsc32((unsigned char *)path1.filename().string().data(), path1.filename().string().size());
-    createChunkData(path, chunk.header, chunk.data);
-    chunk.header.crc32 = sw::computeCsc32((unsigned char *)&chunk.data, sizeof(chunk.data));
-    sw::File::writeInFile(chunk);
+    try {
+        fillType("RAWD", chunk.header);
+        chunk.header.id = sw::computeCsc32((unsigned char *) path1.filename().string().data(), path1.filename().string().size());
+        createChunkData(path, chunk.header, chunk.data);
+        chunk.header.crc32 = sw::computeCsc32((unsigned char *) &chunk.data, sizeof(chunk.data));
+        sw::File::writeInFile(chunk);
+    } catch (const std::exception& e) {
+        sw::Log::AddLog(e.what(), sw::Log::WARNING);
+    }
 }
 
 void sw::Packer::fillType(std::string &&type, sw::chunkHeader& header)
