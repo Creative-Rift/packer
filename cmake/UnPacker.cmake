@@ -9,12 +9,17 @@ set( SRC_FOLDERS
         ${CMAKE_CURRENT_SOURCE_DIR}/sources/
         ${CMAKE_CURRENT_SOURCE_DIR}/sources/file/
         ${CMAKE_CURRENT_SOURCE_DIR}/sources/unpack/
+        ${CMAKE_CURRENT_SOURCE_DIR}/sources/exception/
+        ${CMAKE_CURRENT_SOURCE_DIR}/sources/utils/
+        ${CMAKE_CURRENT_SOURCE_DIR}/sources/log/
         )
 ## INCLUDE FOLDERS
 set( INC_FOLDERS
         ${CMAKE_CURRENT_SOURCE_DIR}/includes/
         ${CMAKE_CURRENT_SOURCE_DIR}/includes/file/
         ${CMAKE_CURRENT_SOURCE_DIR}/includes/unpack/
+        ${CMAKE_CURRENT_SOURCE_DIR}/includes/exception/
+        ${CMAKE_CURRENT_SOURCE_DIR}/includes/log/
         )
 
 ## GET SOURCES
