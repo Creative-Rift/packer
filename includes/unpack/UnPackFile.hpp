@@ -8,13 +8,18 @@
 
 #include <string>
 
+#include "Chunk.hpp"
+
 namespace sw {
 
     class UnPackFile {
         public:
-            explicit UnPackFile(std::string path);
+            explicit UnPackFile(std::string path, std::string outputPath = "./");
         private:
+            std::fstream m_file;
 
+            void readChunk(std::string& outputPath);
+            void createFile(sw::chunkHeader &chunkHeader, std::string path, std::string& outputPath);
     };
 
 } // sw

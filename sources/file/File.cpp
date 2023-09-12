@@ -7,16 +7,18 @@
 #include <filesystem>
 
 #include "File.hpp"
+#include "FileException.hpp"
+#include "Log.hpp"
 
 std::fstream sw::File::m_file{};
 sw::filePackHeader sw::File::m_header{};
 
 void sw::File::createHeader()
 {
-    m_header.id[0] = 's';
-    m_header.id[1] = 'w';
-    m_header.id[2] = 'f';
-    m_header.id[3] = 'p';
+    m_header.id[0] = 'S';
+    m_header.id[1] = 'W';
+    m_header.id[2] = 'F';
+    m_header.id[3] = 'P';
     m_header.version = 100;
     m_header.fileType = DEVPACK;
 }
@@ -30,6 +32,8 @@ void sw::File::generateFile(std::string&& fileName, std::string&& path, bool dis
         fileName = computeFileName(fileName, path);
         m_file.open(path + fileName + ".swfp", std::ios::out | std::ios::binary);
     }
+    if (!m_file.is_open())
+        throw sw::FileException("Cannot create packed file: " + path + fileName + ".swfp");
     m_file.write(reinterpret_cast<const char *>(&m_header), sizeof(filePackHeader));
 }
 

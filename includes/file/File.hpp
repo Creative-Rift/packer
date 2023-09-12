@@ -12,6 +12,9 @@
 
 #include "Chunk.hpp"
 
+#define FILE_TYPE "SWFP"
+#define FILE_VERSION 100
+
 namespace sw {
 
     /// \brief Define the type of the file
