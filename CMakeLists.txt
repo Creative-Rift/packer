@@ -10,7 +10,7 @@ set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/out/ )
 
 project( "SW Packer"
         VERSION
-        0.1
+        1.0
         DESCRIPTION
         "Pack all resources into one file"
         LANGUAGES
