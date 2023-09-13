@@ -58,7 +58,7 @@ void sw::UnPackFile::createFile(sw::chunkHeader &chunkHeader, std::string path, 
     m_file.read((char *)buffer, chunkHeader.sizeBase);
     try {
         std::fstream outFile(outputPath + path, std::ios::out | std::ios::binary);
-        if (outFile.is_open())
+        if (!outFile.is_open())
             throw sw::FileException("File cannot be created");
         outFile.write((char *)buffer, chunkHeader.sizeBase);
         free(buffer);
