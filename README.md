@@ -8,7 +8,7 @@ The compilation is simple, you can choose between two target: Packer and Unpacke
 ```shell
 mkdir "build" && cd build
 cmake -G "Visual Studio 17 2022" -DCMAKE_BUILD_TYPE=[Debug/Release] ..
-cmake --build . --target SWEngine-[packer/unpacker]_0.1 --config [Debug/Release]
+cmake --build . --target SWEngine-[packer/unpacker]_1.1 --config [Debug/Release]
 ```
 #### Option
 You can define an option by using : `-D[option]=[value]`
