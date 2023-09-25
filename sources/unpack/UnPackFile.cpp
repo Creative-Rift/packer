@@ -53,12 +53,22 @@ void sw::UnPackFile::createFile(sw::chunkHeader &chunkHeader, std::string path, 
 {
     std::filesystem::path p(outputPath + path);
     std::filesystem::create_directories(p.parent_path());
+
+#ifdef SWFP_COMP
     auto *bufferComp = (unsigned char*)sw::MemAlloc(chunkHeader.sizePack);
     auto *buffer = (unsigned char*)sw::MemAlloc(ZSTD_compressBound(chunkHeader.sizeBase));
 
     memset(bufferComp, '\0', chunkHeader.sizePack);
     m_file.read((char *)bufferComp, chunkHeader.sizePack);
     size_t sizeComp = ZSTD_decompress(buffer, ZSTD_compressBound(chunkHeader.sizeBase), bufferComp, chunkHeader.sizePack);
+    if (sizeComp != chunkHeader.sizeBase)
+        throw sw::FileException("File size id different");
+#else
+    auto *buffer = (unsigned char*)sw::MemAlloc(chunkHeader.sizeBase);
+
+    memset(buffer, '\0', chunkHeader.sizePack);
+    m_file.read((char *)buffer, chunkHeader.sizePack);
+#endif
     try {
         std::fstream outFile(outputPath + path, std::ios::out | std::ios::binary);
         if (!outFile.is_open())
