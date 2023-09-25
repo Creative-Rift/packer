@@ -13,6 +13,7 @@
 #include "FileException.hpp"
 #include "utils.hpp"
 #include "Log.hpp"
+#include "zstd.hpp"
 
 std::string sw::Packer::path{};
 
@@ -55,11 +56,17 @@ void sw::Packer::createChunkData(std::string path, sw::chunkHeader& header, sw::
     std::memcpy(data.path, path.data() + sw::Packer::path.size(), path.size() - sw::Packer::path.size());
     data.pathCount = path.size() - sw::Packer::path.size();
     fillProps(data);
+    header.sizeBase = size;
+#ifdef SWFP_COMP
+    data.data = sw::MemAlloc(ZSTD_compressBound(size));
+    header.sizePack = ZSTD_compress(data.data, ZSTD_compressBound(size), buffer.data(), size, 15);
+    if (ZSTD_isError(header.sizePack))
+        throw sw::FileException("Unexpected error occur during compression process: " + std::string(ZSTD_getErrorName(header.sizePack)));
+#else
+    header.sizePack = size;
     data.data = sw::MemAlloc(size);
     std::memcpy(data.data, buffer.data(), size);
-
-    header.sizeBase = size;
-    header.sizePack = size;
+#endif
 }
 
 void sw::Packer::readFile(std::string path)

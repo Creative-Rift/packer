@@ -1,5 +1,6 @@
 ## PROJECT VAR
 ## <=====================================>
+unset(EXEC)
 set( EXEC "SWEngine-packer_${CMAKE_PROJECT_VERSION}" )
 set( EXT cpp )
 ## <=====================================>
@@ -15,6 +16,8 @@ set( SRC_FOLDERS
         )
 ## INCLUDE FOLDERS
 set( INC_FOLDERS
+        ${CMAKE_CURRENT_SOURCE_DIR}/libraries/
+
         ${CMAKE_CURRENT_SOURCE_DIR}/includes/
         ${CMAKE_CURRENT_SOURCE_DIR}/includes/file/
         ${CMAKE_CURRENT_SOURCE_DIR}/includes/pack/
@@ -39,7 +42,10 @@ add_executable(${EXEC} ${SRC})
 ## <=====================================>
 
 target_compile_definitions(${EXEC} PUBLIC "SWFP_PACKER")
-
+if (${SWFP_COMP})
+    message(${PREFIX_MESSAGE} "Compression process enabled!")
+    target_compile_definitions(${EXEC} PUBLIC "SWFP_COMP")
+endif ()
 
 ## ADD INCLUDES
 ## <=====================================>
@@ -51,6 +57,26 @@ target_include_directories(${EXEC} PUBLIC ${INC_FOLDERS})
 if(MSVC)
     target_compile_options(${EXEC} PRIVATE "/MP")
 endif()
+## <=====================================>
+
+## IMPORTED STATIC LIBRARY NAME
+set( STATIC_LIB_NAME
+        zstd_static
+        )
+
+## IMPORTED STATIC LIBRARY .lib file
+set( STATIC_LIB
+        ${CMAKE_SOURCE_DIR}/libraries/zstd_static.lib
+        )
+
+## STATIC LIBRARY LINKING
+## <=====================================>
+if (${STATIC_LIB_NAME})
+    target_link_libraries(${EXEC}
+            PUBLIC
+            ${STATIC_LIB_NAME}
+    )
+endif ()
 ## <=====================================>
 
 if (${CMAKE_BUILD_TYPE} MATCHES Debug)

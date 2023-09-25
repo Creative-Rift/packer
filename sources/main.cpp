@@ -24,7 +24,7 @@ int main(int argc, char** argv)
     }
     try {
 #ifdef SWFP_PACKER
-        sw::Packer::path = argv[1];
+    sw::Packer::path = argv[1];
 
     sw::File::countFiles(sw::Packer::path);
     sw::File::generateFile("packages");
