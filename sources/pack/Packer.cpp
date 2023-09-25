@@ -13,6 +13,7 @@
 #include "FileException.hpp"
 #include "utils.hpp"
 #include "Log.hpp"
+#include "zstd.hpp"
 
 std::string sw::Packer::path{};
 
@@ -55,11 +56,10 @@ void sw::Packer::createChunkData(std::string path, sw::chunkHeader& header, sw::
     std::memcpy(data.path, path.data() + sw::Packer::path.size(), path.size() - sw::Packer::path.size());
     data.pathCount = path.size() - sw::Packer::path.size();
     fillProps(data);
-    data.data = sw::MemAlloc(size);
-    std::memcpy(data.data, buffer.data(), size);
-
+    data.data = sw::MemAlloc(ZSTD_compressBound(size));
     header.sizeBase = size;
-    header.sizePack = size;
+    header.sizePack = ZSTD_compress(data.data, ZSTD_compressBound(size), buffer.data(), size, 15);
+    //std::memcpy(data.data, buffer.data(), size);
 }
 
 void sw::Packer::readFile(std::string path)

@@ -10,7 +10,7 @@ set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/out/ )
 
 project( "SW Packer"
         VERSION
-        1.0
+        1.1
         DESCRIPTION
         "Pack all resources into one file"
         LANGUAGES
@@ -32,5 +32,6 @@ message(${PREFIX_MESSAGE} "Project location: " ${CMAKE_SOURCE_DIR})
 message(${PREFIX_MESSAGE} "Project system: " ${CMAKE_SYSTEM_NAME})
 
 
-include(cmake/Packer.cmake)
 include(cmake/UnPacker.cmake)
+
+
