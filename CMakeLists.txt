@@ -44,14 +44,17 @@ set( STATIC_LIB
 list(LENGTH STATIC_LIB_NAME  list_len)
 math(EXPR LIST_LEN "${list_len} - 1")
 
-foreach(ctr RANGE ${LIST_LEN})
-    list(GET STATIC_LIB_NAME ${ctr} lib)
-    list(GET STATIC_LIB ${ctr} filelib)
-    add_library(${lib} STATIC IMPORTED)
-    set_target_properties(${lib} PROPERTIES
-            IMPORTED_LOCATION ${filelib}
-    )
-endforeach()
+if (${LIST_LEN} GREATER_EQUAL 0)
+
+    foreach(ctr RANGE ${LIST_LEN})
+        list(GET STATIC_LIB_NAME ${ctr} lib)
+        list(GET STATIC_LIB ${ctr} filelib)
+        add_library(${lib} STATIC IMPORTED)
+        set_target_properties(${lib} PROPERTIES
+                IMPORTED_LOCATION ${filelib}
+        )
+    endforeach()
+endif ()
 
 include(cmake/Packer.cmake)
 include(cmake/UnPacker.cmake)
