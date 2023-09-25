@@ -71,10 +71,12 @@ set( STATIC_LIB
 
 ## STATIC LIBRARY LINKING
 ## <=====================================>
-target_link_libraries(${EXEC}
-        PUBLIC
-        ${STATIC_LIB_NAME}
-)
+if (${STATIC_LIB_NAME})
+    target_link_libraries(${EXEC}
+            PUBLIC
+            ${STATIC_LIB_NAME}
+    )
+endif ()
 ## <=====================================>
 
 if (${CMAKE_BUILD_TYPE} MATCHES Debug)
