@@ -35,12 +35,10 @@ option(SWFP_COMP "Define if the packer will enable compact process" )
 
 ## IMPORTED STATIC LIBRARY NAME
 set( STATIC_LIB_NAME
-        zstd_static
         )
 
 ## IMPORTED STATIC LIBRARY .lib file
 set( STATIC_LIB
-        ${CMAKE_SOURCE_DIR}/libraries/zstd_static.lib
         )
 
 list(LENGTH STATIC_LIB_NAME  list_len)
