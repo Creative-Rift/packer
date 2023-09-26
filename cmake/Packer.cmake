@@ -61,7 +61,7 @@ endif()
 
 ## STATIC LIBRARY LINKING
 ## <=====================================>
-if (${STATIC_LIB_NAME})
+if (NOT ${STATIC_LIB_NAME} STREQUAL "")
     target_link_libraries(${EXEC}
             PUBLIC
             ${STATIC_LIB_NAME}
