@@ -51,7 +51,7 @@ jobs:
       - name: Build executables
         run: |
           cd ${{github.workspace}}\build
-          cmake --build ${{github.workspace}}\build --config ${{env.BUILD_TYPE}}
+          cmake --build ${{github.workspace}}\build --target SWEngine-unpacker_${{env.VERSION_NAME}} --config ${{env.BUILD_TYPE}}
 
       - name: Archive Library
         uses: actions/upload-artifact@v3
@@ -73,7 +73,7 @@ jobs:
       - name: Build executables
         run: |
           cd ${{github.workspace}}\build
-          cmake --build ${{github.workspace}}\build --config ${{env.BUILD_TYPE}}
+          cmake --build ${{github.workspace}}\build --target SWEngine-unpacker_${{env.VERSION_NAME}} --config ${{env.BUILD_TYPE}}
 
       - name: Archive library
         uses: actions/upload-artifact@v3

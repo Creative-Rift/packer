@@ -47,7 +47,6 @@ list(LENGTH STATIC_LIB_NAME  list_len)
 math(EXPR LIST_LEN "${list_len} - 1")
 
 if (${LIST_LEN} GREATER_EQUAL 0)
-
     foreach(ctr RANGE ${LIST_LEN})
         list(GET STATIC_LIB_NAME ${ctr} lib)
         list(GET STATIC_LIB ${ctr} filelib)
