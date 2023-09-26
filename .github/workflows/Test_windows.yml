@@ -12,7 +12,7 @@ on:
 
 env:
   BUILD_TYPE: Release
-  VERSION_NAME: 1.1
+  VERSION_NAME: 1.2
 
 jobs:
   Build_exec:

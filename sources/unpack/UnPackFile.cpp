@@ -5,6 +5,7 @@
 
 #include <fstream>
 #include <filesystem>
+#include <iostream>
 
 #include "UnPackFile.hpp"
 #include "File.hpp"
@@ -74,6 +75,7 @@ void sw::UnPackFile::createFile(sw::chunkHeader &chunkHeader, std::string path, 
         if (!outFile.is_open())
             throw sw::FileException("File cannot be created");
         outFile.write((char *)buffer, chunkHeader.sizeBase);
+        outFile.close();
         free(buffer);
     } catch (const sw::FileException& e) {
         sw::Log::AddLog("Cannot create file: " + path, sw::Log::WARNING);
