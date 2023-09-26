@@ -34,8 +34,9 @@ jobs:
       - name: Archive Executable
         uses: actions/upload-artifact@v3
         with:
-          name: SWPacker
+          name: SWPacker-Exec
           path: ${{github.workspace}}\out\${{env.VERSION_NAME}}\Release\
+          if-no-files-found: error
 
   Build_Unpack_Shared:
     runs-on: windows-latest
@@ -56,8 +57,9 @@ jobs:
       - name: Archive Library
         uses: actions/upload-artifact@v3
         with:
-          name: SWPacker
+          name: SWPacker-shared-lib
           path: ${{github.workspace}}\out\${{env.VERSION_NAME}}\Release\
+          if-no-files-found: error
 
   Build_Unpack_Static:
     runs-on: windows-latest
@@ -78,5 +80,6 @@ jobs:
       - name: Archive library
         uses: actions/upload-artifact@v3
         with:
-          name: SWPacker
+          name: SWPacker-static-lib
           path: ${{github.workspace}}\out\${{env.VERSION_NAME}}\Release\
+          if-no-files-found: error

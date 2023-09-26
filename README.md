@@ -1,3 +1,8 @@
+<p align="center">
+    <img src=".github/resources/images/logo.png"
+        style="height: 200px">
+</p>
+
 # SWPacker
 ## Description
 SWPacker is program that allow to pack all files from a directory. 
