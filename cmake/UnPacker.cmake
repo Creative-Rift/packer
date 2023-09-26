@@ -36,8 +36,21 @@ file(GLOB SRC ${TMP})
 
 ## OUTPUT
 ## <=====================================>
-## EXECUTABLE
-add_executable(${EXEC} ${SRC})
+
+if (NOT ${BUILD_UNPACK_LIB_SHARED} AND NOT ${BUILD_UNPACK_LIB_STATIC})
+    ## EXECUTABLE
+    add_executable(${EXEC} ${SRC})
+    message(${PREFIX_MESSAGE} "Unpacker build as executable")
+elseif (${BUILD_UNPACK_LIB_SHARED})
+    ## SHARED LIB
+    add_library(${EXEC} SHARED ${SRC})
+    message(${PREFIX_MESSAGE} "Unpacker build as Shared library")
+elseif (${BUILD_UNPACK_LIB_STATIC})
+    ## STATIC LIB
+    add_library(${EXEC} STATIC ${SRC})
+    message(${PREFIX_MESSAGE} "Unpacker build as Static library")
+endif ()
+
 ## <=====================================>
 
 target_compile_definitions(${EXEC} PUBLIC "SWFP_UNPACKER")
@@ -58,7 +71,7 @@ endif()
 
 ## STATIC LIBRARY LINKING
 ## <=====================================>
-if (${STATIC_LIB_NAME})
+if (NOT ${STATIC_LIB_NAME} STREQUAL "")
     target_link_libraries(${EXEC}
             PUBLIC
             ${STATIC_LIB_NAME}

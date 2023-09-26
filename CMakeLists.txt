@@ -32,6 +32,8 @@ message(${PREFIX_MESSAGE} "Project location: " ${CMAKE_SOURCE_DIR})
 message(${PREFIX_MESSAGE} "Project system: " ${CMAKE_SYSTEM_NAME})
 
 option(SWFP_COMP "Define if the packer will enable compact process" )
+option(BUILD_UNPACK_LIB_SHARED "Define if Unpacker is build as a library as shared" )
+option(BUILD_UNPACK_LIB_STATIC "Define if Unpacker is build as a library as static" )
 
 ## IMPORTED STATIC LIBRARY NAME
 set( STATIC_LIB_NAME
