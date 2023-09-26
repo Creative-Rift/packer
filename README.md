@@ -14,6 +14,8 @@ cmake --build . --target SWEngine-[packer/unpacker]_1.1 --config [Debug/Release]
 You can define an option by using : `-D[option]=[value]`
 - CMAKE_BUILD_TYPE: Debug/Release
 - SWFP_COMP: ON/OFF
+- BUILD_UNPACK_LIB_SHARED: ON/OFF
+- BUILD_UNPACK_LIB_STATIC: ON/OFF
 
 ## Usage
 ### Packer

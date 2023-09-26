@@ -59,16 +59,6 @@ if(MSVC)
 endif()
 ## <=====================================>
 
-## IMPORTED STATIC LIBRARY NAME
-set( STATIC_LIB_NAME
-        zstd_static
-        )
-
-## IMPORTED STATIC LIBRARY .lib file
-set( STATIC_LIB
-        ${CMAKE_SOURCE_DIR}/libraries/zstd_static.lib
-        )
-
 ## STATIC LIBRARY LINKING
 ## <=====================================>
 if (${STATIC_LIB_NAME})
