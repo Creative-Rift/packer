@@ -12,13 +12,14 @@ on:
 
 env:
   BUILD_TYPE: Release
+  VERSION_NAME: 1.1
 
 jobs:
-  Test_windows:
+  Build_exec:
     runs-on: windows-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
           
       - name: Config executables
         run: |
@@ -33,5 +34,52 @@ jobs:
       - name: Archive Executable
         uses: actions/upload-artifact@v3
         with:
-          name: SWPacker
-          path: ${{github.workspace}}\out\0.1\Release\
+          name: SWPacker-Exec
+          path: ${{github.workspace}}\out\${{env.VERSION_NAME}}\Release\
+          if-no-files-found: error
+
+  Build_Unpack_Shared:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Config executables
+        run: |
+          mkdir build && cd build
+          cmake -B ${{github.workspace}}\build -G "Visual Studio 17 2022" -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_UNPACK_LIB_SHARED=ON ..
+
+      - name: Build executables
+        run: |
+          cd ${{github.workspace}}\build
+          cmake --build ${{github.workspace}}\build --target SWEngine-unpacker_${{env.VERSION_NAME}} --config ${{env.BUILD_TYPE}}
+
+      - name: Archive Library
+        uses: actions/upload-artifact@v3
+        with:
+          name: SWPacker-shared-lib
+          path: ${{github.workspace}}\out\${{env.VERSION_NAME}}\Release\
+          if-no-files-found: error
+
+  Build_Unpack_Static:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Config executables
+        run: |
+          mkdir build && cd build
+          cmake -B ${{github.workspace}}\build -G "Visual Studio 17 2022" -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_UNPACK_LIB_STATIC=ON ..
+
+      - name: Build executables
+        run: |
+          cd ${{github.workspace}}\build
+          cmake --build ${{github.workspace}}\build --target SWEngine-unpacker_${{env.VERSION_NAME}} --config ${{env.BUILD_TYPE}}
+
+      - name: Archive library
+        uses: actions/upload-artifact@v3
+        with:
+          name: SWPacker-static-lib
+          path: ${{github.workspace}}\out\${{env.VERSION_NAME}}\Release\
+          if-no-files-found: error
